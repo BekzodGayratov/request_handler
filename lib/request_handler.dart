@@ -2,7 +2,7 @@
 import 'package:dio/dio.dart';
 
 class DioRequestHandler {
-  dynamic _chechStatusCode(Response response) {
+  static dynamic _checkStatusCode(Response response) {
     switch (response.statusCode) {
       // Information status codes
       case 100:
@@ -178,6 +178,553 @@ class DioRequestHandler {
   }) async {
     try {
       _createRequest(defaultTimeOuts: defaultTimeOuts).close(force: force);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> delete(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .delete(
+              queryParameters: queryParametrs,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> deleteUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .deleteUri(
+              cancelToken: cancelToken, uri, data: data, options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> download(
+      // Request parametrs
+      {
+    required String url,
+    required String savePath,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .download(url, savePath);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> downloadUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required String savePath,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .downloadUri(uri, savePath);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> fetch(
+      // Request parametrs
+      {
+    required RequestOptions requestOptions,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .fetch(requestOptions);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> get(
+      // Request parametrs
+      {
+    required String url,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    Function(int, int)? onRecieveProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .get(
+              queryParameters: queryParametrs,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              url,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> getUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    Options? options,
+    Function(int, int)? onRecieveProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .getUri(
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              uri,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> head(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .head(
+              queryParameters: queryParametrs,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> headUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .headUri(cancelToken: cancelToken, uri, data: data, options: options);
+
+      // Status code successful?
+
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> patch(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .patch(
+              onSendProgress: onSendProgress,
+              queryParameters: queryParametrs,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> patchUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .patchUri(
+              onSendProgress: onSendProgress,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              uri,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> post(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .post(
+              onSendProgress: onSendProgress,
+              queryParameters: queryParametrs,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> postUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .postUri(
+              onSendProgress: onSendProgress,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              uri,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> put(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .put(
+              queryParameters: queryParametrs,
+              onSendProgress: onRecieveProgress,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> putUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .putUri(
+              onSendProgress: onSendProgress,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              uri,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> request(
+      // Request parametrs
+      {
+    required String url,
+    required Map<String, dynamic> data,
+    Options? options,
+    Map<String, dynamic>? queryParametrs,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .request(
+              onSendProgress: onSendProgress,
+              queryParameters: queryParametrs,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              url,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout ||
+          e.type == DioErrorType.receiveTimeout ||
+          e.type == DioErrorType.sendTimeout) {
+        return "Server time out error";
+      } else {
+        return "No internet connection";
+      }
+    }
+  }
+
+  static Future<dynamic> requestUri(
+      // Request parametrs
+      {
+    required Uri uri,
+    required Map<String, dynamic> data,
+    Options? options,
+    Function(int, int)? onRecieveProgress,
+    Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
+    // Default time outs are 59 sekund
+    int? defaultTimeOuts,
+  }) async {
+    try {
+      Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
+          .requestUri(
+              onSendProgress: onSendProgress,
+              onReceiveProgress: onRecieveProgress,
+              cancelToken: cancelToken,
+              uri,
+              data: data,
+              options: options);
+
+      // Status code successful?
+      return _checkStatusCode(response);
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.receiveTimeout ||
