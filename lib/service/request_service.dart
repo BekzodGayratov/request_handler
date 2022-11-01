@@ -1,8 +1,31 @@
-// This class pick all DIO methods
 import 'package:dio/dio.dart';
+import 'package:request_handler/config/dio_config.dart';
 
-class DioRequestHandler {
-  dynamic _chechStatusCode(Response response) {
+Future<dynamic> request(
+    // Request parametrs
+    {
+  required String url,
+  required Map<String, dynamic> data,
+  Options? options,
+  Map<String, dynamic>? queryParametrs,
+  Function(int, int)? onRecieveProgress,
+  Function(int, int)? onSendProgress,
+  CancelToken? cancelToken,
+  // Default time outs are 59 sekund
+  int? defaultTimeOuts,
+}) async {
+  try {
+    Response response =
+        await DioConfig.createRequest(defaultTimeOuts: defaultTimeOuts).request(
+            onSendProgress: onSendProgress,
+            queryParameters: queryParametrs,
+            onReceiveProgress: onRecieveProgress,
+            cancelToken: cancelToken,
+            url,
+            data: data,
+            options: options);
+
+    // Status code successful?
     switch (response.statusCode) {
       // Information status codes
       case 100:
@@ -139,53 +162,13 @@ class DioRequestHandler {
       default:
         return "The response is not successfull!!!";
     }
-  }
-
-  static Dio _createRequest({
-    int? defaultTimeOuts,
-  }) {
-    Dio dio = Dio(BaseOptions(
-      validateStatus: (int? statusCode) {
-        if (statusCode != null) {
-          if (statusCode >= 100 && statusCode <= 511) {
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      },
-      receiveDataWhenStatusError: true,
-    ));
-
-    // TIME OUT
-
-    dio.options.connectTimeout = defaultTimeOuts ?? 59 * 1000;
-    dio.options.receiveTimeout = defaultTimeOuts ?? 59 * 1000;
-    dio.options.sendTimeout = defaultTimeOuts ?? 59 * 1000;
-
-    return dio;
-  }
-
-  static Future<dynamic> close(
-      // Request parametrs
-      {
-    required bool force,
-
-    // Default time outs are 59 sekund
-    int? defaultTimeOuts,
-  }) async {
-    try {
-      _createRequest(defaultTimeOuts: defaultTimeOuts).close(force: force);
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.connectTimeout ||
-          e.type == DioErrorType.receiveTimeout ||
-          e.type == DioErrorType.sendTimeout) {
-        return "Server time out error";
-      } else {
-        return "No internet connection";
-      }
+  } on DioError catch (e) {
+    if (e.type == DioErrorType.connectTimeout ||
+        e.type == DioErrorType.receiveTimeout ||
+        e.type == DioErrorType.sendTimeout) {
+      return "Server time out error";
+    } else {
+      return "No internet connection";
     }
   }
 }
