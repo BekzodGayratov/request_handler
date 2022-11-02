@@ -346,7 +346,6 @@ class DioRequestHandler {
               cancelToken: cancelToken,
               url,
               options: options);
-    
 
       // Status code successful?
       return _checkStatusCode(response);
