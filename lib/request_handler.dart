@@ -1,5 +1,6 @@
 // This class pick all DIO methods
 import 'package:dio/dio.dart';
+import 'package:flutter/rendering.dart';
 
 class DioRequestHandler {
   static dynamic _checkStatusCode(Response response) {
@@ -254,14 +255,16 @@ class DioRequestHandler {
       {
     required String url,
     required String savePath,
+    Function(int, int)? onRecieveProgress,
     // Default time outs are 59 sekund
     int? defaultTimeOuts,
   }) async {
     try {
       Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
-          .download(url, savePath);
+          .download(url, savePath, onReceiveProgress: onRecieveProgress);
 
       // Status code successful?
+
       return _checkStatusCode(response);
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||
@@ -280,11 +283,12 @@ class DioRequestHandler {
     required Uri uri,
     required String savePath,
     // Default time outs are 59 sekund
+    Function(int, int)? onRecieveProgress,
     int? defaultTimeOuts,
   }) async {
     try {
       Response response = await _createRequest(defaultTimeOuts: defaultTimeOuts)
-          .downloadUri(uri, savePath);
+          .downloadUri(uri, savePath, onReceiveProgress: onRecieveProgress);
 
       // Status code successful?
       return _checkStatusCode(response);
@@ -342,6 +346,7 @@ class DioRequestHandler {
               cancelToken: cancelToken,
               url,
               options: options);
+    
 
       // Status code successful?
       return _checkStatusCode(response);
